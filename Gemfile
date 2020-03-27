@@ -15,6 +15,10 @@ gem 'sassc-rails'
 gem 'simple_form'
 gem 'uglifier'
 gem 'webpacker'
+gem 'money-rails'
+gem 'stripe'
+gem 'stripe_event'
+gem 'acts_as_votable'
 
 group :development do
   gem 'web-console', '>= 3.3.0'

@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_22_153619) do
+ActiveRecord::Schema.define(version: 2020_03_25_113600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "matches", force: :cascade do |t|
+    t.bigint "teddy_1"
+    t.bigint "teddy_2"
+    t.string "match_date"
+    t.boolean "exchanged"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teddy_1"], name: "index_matches_on_teddy_1"
+    t.index ["teddy_2"], name: "index_matches_on_teddy_2"
+  end
+
+  create_table "teddies", force: :cascade do |t|
+    t.string "sku"
+    t.string "name"
+    t.bigint "category_id"
+    t.string "photo_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "price_cents", default: 0, null: false
+    t.index ["category_id"], name: "index_teddies_on_category_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +55,21 @@ ActiveRecord::Schema.define(version: 2020_03_22_153619) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "votes", id: :serial, force: :cascade do |t|
+    t.string "votable_type"
+    t.integer "votable_id"
+    t.string "voter_type"
+    t.integer "voter_id"
+    t.boolean "vote_flag"
+    t.string "vote_scope"
+    t.integer "vote_weight"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope"
+    t.index ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope"
+  end
+
+  add_foreign_key "matches", "teddies", column: "teddy_1"
+  add_foreign_key "matches", "teddies", column: "teddy_2"
+  add_foreign_key "teddies", "categories"
 end

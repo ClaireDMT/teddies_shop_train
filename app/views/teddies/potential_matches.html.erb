@@ -1,0 +1,19 @@
+<div class="container">
+  <h1>Match for <%= @teddy.name %></h1>
+  <div class="row">
+    <% @potential_matches.each do |potential| %>
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <%= image_tag potential.photo_url , class: "card-img-top" %>
+          <div class="card-body">
+            <h5 class="card-title"><%= potential.name %></h5>
+            <p class="card-text"><%= potential.category.name %></p>
+            <p>Amount: <%= humanized_money_with_symbol(potential.price) %></p>
+            <%= link_to "No, thanks", teddy_dislike_path(potential), class: "btn btn-danger" %>
+            <%= link_to "Like it", teddy_like_path(potential, teddy_matching: @teddy), class: "btn btn-success" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
